@@ -44,6 +44,17 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        if (groceryListText != null)
+            groceryListText.richText = true;
+        else
+            Debug.LogWarning("GameManager: groceryListText is not assigned in the Inspector.");
+
+        if (statusText == null)
+            Debug.LogWarning("GameManager: statusText is not assigned in the Inspector.");
+
+        if (successText == null)
+            Debug.LogWarning("GameManager: successText is not assigned in the Inspector.");
+
         UpdateListUI();
         ShowStatus("Pick up the cart and collect the items on your list.");
         if (successText != null)
@@ -71,21 +82,21 @@ public class GameManager : MonoBehaviour
         return collected.TryGetValue(itemType, out bool value) && value;
     }
 
-    public void CollectItem(GroceryItem item)
+    public bool CollectItem(GroceryItem item)
     {
         if (item == null)
-            return;
+            return false;
 
         if (!IsRequiredItem(item.itemType))
         {
             ShowStatus("This item is not on the list.");
-            return;
+            return false;
         }
 
         if (item.isCollected || IsItemCollected(item.itemType))
         {
             ShowStatus("This item has already been collected.");
-            return;
+            return false;
         }
 
         item.isCollected = true;
@@ -103,6 +114,8 @@ public class GameManager : MonoBehaviour
             int remaining = collected.Values.Count(value => !value);
             ShowStatus($"Collected {item.itemType}. {remaining} item(s) remaining.");
         }
+
+        return true;
     }
 
     public void NotifyMissingItems()

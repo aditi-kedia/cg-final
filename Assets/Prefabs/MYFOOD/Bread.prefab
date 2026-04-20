@@ -140,7 +140,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 976a747a89b714d4bb7edee69a7a6b07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemType: 3
+  itemType: 2
   isCollected: 0
 --- !u!114 &1333857938183915966
 MonoBehaviour:

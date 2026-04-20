@@ -52,6 +52,9 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
 public class ShoppingCartTrigger : MonoBehaviour
 {
     public Transform cartStoragePoint; // where items go
+    public int columns = 3;
+    public Vector3 itemSpacing = new Vector3(0.25f, 0.15f, 0.25f);
+    public Vector3 baseOffset = new Vector3(0.12f, 0.05f, 0.12f);
 
     private void Reset()
     {
@@ -69,14 +72,21 @@ public class ShoppingCartTrigger : MonoBehaviour
         if (item == null || item.isCollected)
             return;
 
-        // Tell GameManager
-        GameManager.Instance?.CollectItem(item);
+        bool collected = GameManager.Instance?.CollectItem(item) ?? false;
+        if (!collected)
+            return;
 
         PlaceItemInCart(item);
     }
 
     private void PlaceItemInCart(GroceryItem item)
     {
+        if (cartStoragePoint == null)
+        {
+            Debug.LogWarning($"ShoppingCartTrigger: cartStoragePoint is not assigned on {gameObject.name}.");
+            return;
+        }
+
         Rigidbody rb = item.GetComponent<Rigidbody>();
         if (rb != null)
         {
@@ -93,7 +103,7 @@ public class ShoppingCartTrigger : MonoBehaviour
         }
 
         // Parent to cart
-        item.transform.SetParent(cartStoragePoint);
+        item.transform.SetParent(cartStoragePoint, false);
 
         // Move to storage position
         item.transform.localPosition = GetNextStackPosition();
@@ -104,12 +114,17 @@ public class ShoppingCartTrigger : MonoBehaviour
 
     private Vector3 GetNextStackPosition()
     {
-        float x = (itemCount % 3) * 0.3f;
-        float z = (itemCount / 3) * 0.3f;
-        float y = 0;
+        int column = itemCount % columns;
+        int row = (itemCount / columns) % columns;
+        int layer = itemCount / (columns * columns);
+
+        Vector3 position = baseOffset + new Vector3(
+            column * itemSpacing.x,
+            layer * itemSpacing.y,
+            row * itemSpacing.z
+        );
 
         itemCount++;
-
-        return new Vector3(x, y, z);
+        return position;
     }
 }
