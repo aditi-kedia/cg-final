@@ -90,7 +90,7 @@ public class GameManager : MonoBehaviour
 
         item.isCollected = true;
         collected[item.itemType] = true;
-        item.gameObject.SetActive(false);
+        // item.gameObject.SetActive(false);
 
         UpdateListUI();
 
