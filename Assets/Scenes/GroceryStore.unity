@@ -1124,7 +1124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c156fc89269b16e4193e041a7a08a40a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cartStoragePoint: {fileID: 0}
+  cartStoragePoint: {fileID: 1771349972}
 --- !u!4 &192458724 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 412524, guid: 242e3d1f67b660a438a44ced60ad78d8, type: 3}
