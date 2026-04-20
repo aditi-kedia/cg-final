@@ -4,9 +4,13 @@ public enum GroceryItemType
 {
     Apples,
     Bananas,
-    Basil,
     Breads,
-    Broccolis
+    Broccolis,
+    Cans,
+    Chips,
+    Dough,
+    Mealbox,
+    Milk
 }
 
 [RequireComponent(typeof(Collider))]

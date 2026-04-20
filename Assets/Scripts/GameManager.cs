@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     {
         GroceryItemType.Apples,
         GroceryItemType.Bananas,
-        GroceryItemType.Basil,
+        GroceryItemType.Cans,
         GroceryItemType.Breads,
         GroceryItemType.Broccolis
     };
@@ -160,8 +160,8 @@ public class GameManager : MonoBehaviour
                 return "Apples";
             case GroceryItemType.Bananas:
                 return "Bananas";
-            case GroceryItemType.Basil:
-                return "Basil";
+            case GroceryItemType.Cans:
+                return "Cans";
             case GroceryItemType.Breads:
                 return "Breads";
             case GroceryItemType.Broccolis:
