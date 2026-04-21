@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -22,6 +23,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI groceryListText;
     public TextMeshProUGUI statusText;
     public TextMeshProUGUI successText;
+    public Button exitButton;
 
     private readonly Dictionary<GroceryItemType, bool> collected = new Dictionary<GroceryItemType, bool>();
 
@@ -54,6 +56,16 @@ public class GameManager : MonoBehaviour
 
         if (successText == null)
             Debug.LogWarning("GameManager: successText is not assigned in the Inspector.");
+
+        if (exitButton == null)
+            Debug.LogWarning("GameManager: exitButton is not assigned in the Inspector.");
+        else
+        {
+            // Initially hide the exit button
+            exitButton.gameObject.SetActive(false);
+            // Add click listener to exit button
+            exitButton.onClick.AddListener(ExitGame);
+        }
 
         UpdateListUI();
         ShowStatus("Pick up the cart and collect the items on your list.");
@@ -132,6 +144,10 @@ public class GameManager : MonoBehaviour
         ShowStatus("Checkout complete! Well done.");
         if (successText != null)
             successText.text = "Success! Shopping task finished.";
+        
+        // Show exit button when success text is displayed
+        if (exitButton != null)
+            exitButton.gameObject.SetActive(true);
     }
 
     private void UpdateListUI()
@@ -182,5 +198,14 @@ public class GameManager : MonoBehaviour
             default:
                 return itemType.ToString();
         }
+    }
+
+    private void ExitGame()
+    {
+        #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+        #else
+            Application.Quit();
+        #endif
     }
 }
