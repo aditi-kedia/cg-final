@@ -5,7 +5,7 @@ public class LevelSelector : MonoBehaviour
 {
     [Header("UI References")]
     [SerializeField] private GameObject levelSelectionPanel; // Panel containing the level buttons
-    [SerializeField] private TextMeshProUGUI selectedLevelText;
+    // [SerializeField] private TextMeshProUGUI selectedLevelText;
     [SerializeField] private TextMeshProUGUI textObject1; // First text to show after selection
     [SerializeField] private TextMeshProUGUI textObject2; // Second text to show after selection
 
@@ -30,7 +30,7 @@ public class LevelSelector : MonoBehaviour
         if (textObject2 != null)
             textObject2.gameObject.SetActive(true);
 
-        UpdateDisplay();
+        // UpdateDisplay();
     }
 
     public void SelectLevel(int level)
@@ -42,7 +42,7 @@ public class LevelSelector : MonoBehaviour
         }
 
         selectedLevel = level;
-        UpdateDisplay();
+        // UpdateDisplay();
 
         // Set the audio level in AudioManager
         AudioManager.Instance?.SetLevel(level);
@@ -70,21 +70,21 @@ public class LevelSelector : MonoBehaviour
             textObject2.gameObject.SetActive(true);
     }
 
-    private void UpdateDisplay()
-    {
-        string levelName = selectedLevel switch
-        {
-            1 => "LOW",
-            2 => "MEDIUM",
-            3 => "HIGH",
-            _ => "MEDIUM"
-        };
+    // private void UpdateDisplay()
+    // {
+    //     string levelName = selectedLevel switch
+    //     {
+    //         1 => "LOW",
+    //         2 => "MEDIUM",
+    //         3 => "HIGH",
+    //         _ => "MEDIUM"
+    //     };
 
-        if (selectedLevelText != null)
-        {
-            selectedLevelText.text = $"Selected: {levelName} (Level {selectedLevel})";
-        }
+    //     // if (selectedLevelText != null)
+    //     // {
+    //     //     selectedLevelText.text = $"Selected: {levelName} (Level {selectedLevel})";
+    //     // }
 
-        Debug.Log($"Level selected: {selectedLevel} - {levelName}");
-    }
+    //     Debug.Log($"Level selected: {selectedLevel} - {levelName}");
+    // }
 }
