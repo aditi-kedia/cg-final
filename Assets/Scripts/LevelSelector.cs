@@ -46,6 +46,7 @@ public class LevelSelector : MonoBehaviour
 
         // Set the audio level in AudioManager
         AudioManager.Instance?.SetLevel(level);
+        DistractionManager.Instance?.SetLevel(level); 
 
         // Hide the level selection panel
         HideLevelPanel();
