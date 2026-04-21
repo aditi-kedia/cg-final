@@ -102,29 +102,50 @@ public class ShoppingCartTrigger : MonoBehaviour
             grab.enabled = false;
         }
 
-        // Parent to cart
-        item.transform.SetParent(cartStoragePoint, false);
-
-        // Move to storage position
-        item.transform.localPosition = GetNextStackPosition();
+        // Store original world scale before reparenting
+        Vector3 originalScale = item.transform.localScale;
+        
+        // Parent to cart storage point
+        item.transform.SetParent(cartStoragePoint);
+        
+        // Get the box collider to determine valid storage bounds
+        BoxCollider storageCollider = cartStoragePoint.GetComponent<BoxCollider>();
+        
+        Vector3 localPosition;
+        if (storageCollider != null)
+        {
+            // Position within the box collider bounds with some padding
+            Vector3 colliderCenter = storageCollider.center;
+            Vector3 colliderSize = storageCollider.size;
+            
+            // Add random offset within the collider bounds (with padding to prevent items from being too close to edges)
+            float padding = 0.05f;
+            localPosition = new Vector3(
+                colliderCenter.x + Random.Range(-colliderSize.x / 2 + padding, colliderSize.x / 2 - padding),
+                colliderCenter.y + Random.Range(0f, colliderSize.y - padding),
+                colliderCenter.z + Random.Range(-colliderSize.z / 2 + padding, colliderSize.z / 2 - padding)
+            );
+        }
+        else
+        {
+            // Fallback if no collider found
+            Debug.LogWarning($"ShoppingCartTrigger: No BoxCollider found on cartStoragePoint {cartStoragePoint.name}. Using default offset.");
+            localPosition = new Vector3(
+                Random.Range(-0.15f, 0.15f),
+                Random.Range(0.05f, 0.2f),
+                Random.Range(-0.1f, 0.1f)
+            );
+        }
+        
+        item.transform.localPosition = localPosition;
         item.transform.localRotation = Quaternion.identity;
-    }
-
-    private int itemCount = 0;
-
-    private Vector3 GetNextStackPosition()
-    {
-        int column = itemCount % columns;
-        int row = (itemCount / columns) % columns;
-        int layer = itemCount / (columns * columns);
-
-        Vector3 position = baseOffset + new Vector3(
-            column * itemSpacing.x,
-            layer * itemSpacing.y,
-            row * itemSpacing.z
+        
+        // Compensate for parent scale so item appears at original size
+        Vector3 parentScale = cartStoragePoint.lossyScale;
+        item.transform.localScale = new Vector3(
+            originalScale.x / parentScale.x,
+            originalScale.y / parentScale.y,
+            originalScale.z / parentScale.z
         );
-
-        itemCount++;
-        return position;
     }
 }
